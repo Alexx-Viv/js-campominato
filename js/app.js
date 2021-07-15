@@ -1,17 +1,15 @@
 const max = 100;
 const min = 1;
-const numberBomb = 50;
-let bombIndex = 0;
+const numberBomb = 80;
 let userIsPlayng = true;
 let bombs = [];
 let usedNumbers = [];
 
 // GENERATORE DI N BOMBE CASUALI E NON RIPETIBILI
-while (bombIndex < numberBomb) {
-  let number = Math.floor(Math.random() * max + min);
+while (bombs.length < numberBomb) {
+  let number = Math.floor(Math.random() * (max - min +1 )+ min);
   if (!bombs.includes(number)) {
     bombs.push(number);
-    bombIndex++;
   }
 }
 
@@ -33,23 +31,24 @@ function askNumber() {
 }
 // FUNZIONE PER CERCARE QUEL NUMERO TRA LA LISTA DELLE BOMBE
 function searchBomb(bombs, userNumber) {
-  for (var i = 0; i < bombs.length; i++) {
-    if (bombs.includes(parseInt(userNumber))) {
-      return true;
-    } else {
+  let isBomb = true;
+    if (!bombs.includes(parseInt(userNumber))) {
       usedNumbers.push(userNumber);
-      return false;
+      isBomb = false;
     }
+    return isBomb;
+
   }
-}
+
 // FUNZIONE PER METTERE IN LOOP ASKNUMBER E SEARCHBOMB FINO A QUANDO PLAYER NON VINCE O PERDE
 function playGame(bombs) {
-  for (var i = 0; i < bombs.length; i++) {
+  let i = 0;
+  while (i < (max - bombs.length) && userIsPlayng === true) {
     let userNumber = askNumber();
     if (searchBomb(bombs, userNumber)) {
-      return (userIsPlayng = false);
+      userIsPlayng = false;
     } else {
       alert("La prossima volta non sarai così fotunato :P");
     }
-  }
+    i++;  }
 }
